@@ -36,31 +36,31 @@ def send_help(message):
 
 
 @bot.message_handler(commands=['add', 'todo'])
-# def add(message):
-#     send = bot.send_message(message.chat.id, 'Введите дату и задачу')
-#     bot.register_next_step_handler(send, text)
-    # log(message)
-
 def add(message):
     bot.send_message(message.chat.id, 'Введите дату и задачу')
-    print(message)
-    message = ''
-    while message == '':
-        @bot.message_handler(content_types=['text'])
-        def add_task(message):
-            print(message.text)
-            in_text = message.text.split(' ', 1)
-            date = in_text[0].lower()
-            task = in_text[1]
-            add_todo(date, task)
-            text = f'Задача {task} добавлена на дату {date}'
-            bot.reply_to(message, text)
+    bot.register_next_step_handler(message, add_task)
+    print(message.text)
+
+def add_task(message):
+    print(message.text)
+    in_text = message.text.split(' ', 1)
+    date = in_text[0].lower()
+    task = in_text[1]
+    add_todo(date, task)
+    text = f'Задача {task} добавлена на дату {date}'
+    bot.reply_to(message, text)
 
 
 @bot.message_handler(commands=['show', 'print'])
 def show(message):
-    in_text = message.text.split(' ', 1)
-    date = in_text[1].lower()
+    bot.send_message(message.chat.id, 'Введите дату, чтобы посмотреть задачи на этот день')
+    bot.register_next_step_handler(message, show_task)
+    print(message.text)
+
+def show_task(message):
+    # in_text = message.text.split(' ', 1)
+    # date = in_text[1].lower()
+    date = message.text.lower()
     text = ''
     if date in tasks:
         text = f'{date.upper()}\n'
