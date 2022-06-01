@@ -5,8 +5,8 @@ from my_token import TOKEN
 
 bot = telebot.TeleBot(TOKEN)
 
-tasks = {}
-tasks_complited = {}
+tasks = {}  # Список текущих задач
+tasks_complited = {}  # Список выполненых задач
 
 HELP = '''
 /help - Вывести текущую справку
@@ -23,7 +23,7 @@ def add_todo(task_date, task):
     else:
         tasks[task_date] = []
         tasks[task_date].append(task)
-    print(f'Задача {task} на дату {task_date} добавлена')
+    # print(f'Задача {task} на дату {task_date} добавлена')
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -36,13 +36,23 @@ def send_help(message):
 
 
 @bot.message_handler(commands=['add', 'todo'])
-def add_task(message):
-    in_text = message.text.split(' ', 2)
-    date = in_text[1].lower()
-    task = in_text[2]
-    add_todo(date, task)
-    text = f'Задача {task} добавлена на дату {date}'
-    bot.reply_to(message, text)
+# def add(message):
+#     send = bot.send_message(message.chat.id, 'Введите дату и задачу')
+#     bot.register_next_step_handler(send, text)
+    # log(message)
+
+def add(message):
+    bot.send_message(message.chat.id, 'Введите дату и задачу')
+    message = None
+    while message == None:
+        @bot.message_handler(content_types=['text'])
+        def add_task(message):
+            in_text = message.text.split(' ', 1)
+            date = in_text[0].lower()
+            task = in_text[1]
+            add_todo(date, task)
+            text = f'Задача {task} добавлена на дату {date}'
+            bot.reply_to(message, text)
 
 
 @bot.message_handler(commands=['show', 'print'])
