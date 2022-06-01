@@ -43,10 +43,12 @@ def send_help(message):
 
 def add(message):
     bot.send_message(message.chat.id, 'Введите дату и задачу')
-    message = None
-    while message == None:
+    print(message)
+    message = ''
+    while message == '':
         @bot.message_handler(content_types=['text'])
         def add_task(message):
+            print(message.text)
             in_text = message.text.split(' ', 1)
             date = in_text[0].lower()
             task = in_text[1]
