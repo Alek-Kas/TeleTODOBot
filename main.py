@@ -39,7 +39,7 @@ def send_help(message):
 def add(message):
     bot.send_message(message.chat.id, 'Введите дату и задачу')
     bot.register_next_step_handler(message, add_task)
-    print(message.text)
+    # print(message.text)
 
 def add_task(message):
     print(message.text)
@@ -55,7 +55,7 @@ def add_task(message):
 def show(message):
     bot.send_message(message.chat.id, 'Введите дату, чтобы посмотреть задачи на этот день')
     bot.register_next_step_handler(message, show_task)
-    print(message.text)
+    # print(message.text)
 
 def show_task(message):
     # in_text = message.text.split(' ', 1)
@@ -73,7 +73,19 @@ def show_task(message):
 
 @bot.message_handler(commands=['show_all'])
 def show_all(message):
-    bot.reply_to(message, "Вас приветствует бот ! Нажмите /help для справки")
+    bot.send_message(message.chat.id, 'Вот Ваш список всех задач:')
+    if tasks:
+        for date in tasks:
+            text = ''
+            # print(date)
+            text = f'{date.upper()}:\n'
+            for task in tasks[date]:
+                # print(task)
+                text = f'{text} [ ] {task}\n'
+            bot.send_message(message.chat.id, text)
+    else:
+        bot.send_message(message.chat.id, 'Пока нет ни одной задачи')
+
 
 
 @bot.message_handler(commands=['delete'])
