@@ -58,8 +58,6 @@ def show(message):
     # print(message.text)
 
 def show_task(message):
-    # in_text = message.text.split(' ', 1)
-    # date = in_text[1].lower()
     date = message.text.lower()
     text = ''
     if date in tasks:
