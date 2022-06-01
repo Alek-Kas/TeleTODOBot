@@ -27,7 +27,7 @@ def add_todo(task_date, task):
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.send_message(message.chat.id, "Вас приветствует бот ! Нажмите /help для справки")
+    bot.send_message(message.chat.id, "Вас приветствует TODO бот, для составленя списка задач! Нажмите /help для справки")
 
 
 @bot.message_handler(commands=['help'])
